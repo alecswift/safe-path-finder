@@ -29,10 +29,15 @@ If you have a suggestion that would make this better, please fork the repo and c
     Push to the Branch (git push origin feature/AmazingFeature)
     Open a Pull Request
 
-## Contact
+## Author
 
 Alec Swift - Alecswift@gmail.com - [LinkedIn](https://www.linkedin.com/in/alec-swift-39841011a/)
 
 ## Acknowledgements
 
 links here
+
+## License
+
+Copyright © 2023 Alec Swift.
+This project is MIT licensed.
