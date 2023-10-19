@@ -7,6 +7,12 @@
     <title>Document</title>
 </head>
 <body>
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+    <nav class="webpages">
+        <a href = "index.html">Home Page</a>
+    </nav>
     <div id="content">
         {% block content %}{% endblock %}
     </div>
