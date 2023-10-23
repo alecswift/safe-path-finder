@@ -5,23 +5,23 @@
 /*   ----- Variables  -----  */
 
 :root {
-    --dark-turquoise: rgba(34,117,99,46);
-    --light-turquoise: rgba(146,247,225,97);
-    --mid-turquoise: rgba(72,245,207,96);
-    --burnt-orange: rgba(194,130,65,76);
-    --lightest-turquoise: rgba(221,243,244,96)
+    --dark-gray: rgba(36, 39, 43);
+    --off-white: rgba(245, 245, 245);
+    --ucla-blue: rgba(62, 120, 178);
+    --cobalt-blue: rgba(0, 75, 168);
+    --black: rgba(7, 7, 10);
 }
 
 /*  ----- Viewport ----- elements inherited by all remaining elements ----- */
 body {       /* Can alternatively define in html {} or :root {} */
-    background-color: var(--mid-turquoise);
+    background-color: var(--black);
     background-image: url("images/desert-gorge-background.jpg");
     background-size: cover;
     background-attachment: fixed;
     background-position: top left;
     background-repeat: no-repeat;
     font-family: "Nunito", sans-serif; /* Define with at least one font name and its related generic family name.*/
-    color: var(--dark-turquoise);
+    color: var(--off-white);
     margin: 0 3%;
     max-width: 94%;
     padding: 0 2%;
@@ -31,27 +31,24 @@ body {       /* Can alternatively define in html {} or :root {} */
 /*  ----- Page layout blocks -----  */
 
 header {
-    background-color: var(--burnt-orange);
+    background-color: var(--cobalt-blue);
     color: var(--light-turquoise);
     margin: 0 10%;
     padding: 0;
-    border: 1px dotted var(--dark-turquoise);
+    border: 1px dotted var(--off-white);
 }
 
 main {
-    background-color: var(--light-turquoise);
-    color: var(--burnt-orange);
     margin: 4px 0;
     padding: 8px 20px;
-    border: 2px solid var(--burnt-orange);
+    border: 2px solid var(--off-white);
 }
 
 footer {
-    background-color: var(--burnt-orange);
     color: var(--light-turquoise);
     margin: 10px 43%;
     padding: 2px 10px;
-    border: 1px dotted var(--dark-turquoise);
+    border: 1px dotted var(--off-white);
     text-align: center;
 }   
 
@@ -63,9 +60,8 @@ nav {
 
 nav a {
     text-decoration: none;
-    background-color: var(--dark-turquoise);
-    color: var(--burnt-orange);
-    border: 1px, var(--dark-turquoise);
+    background-color: var(--dark-gray);
+    border: 1px, var(--black);
     border-radius: 12%;
     text-align: center;
     font-size: 1.4em;
@@ -74,42 +70,30 @@ nav a {
 }
 
 nav a:hover {
-    background-color: var(--burnt-orange);
-    color: var(--light-turquoise);
+    color: var(--ucla-blue);
 }
 
 /*  ----- Form ----- */
 form, button, input, select, textarea {
     font-family: "Nunito", sans-serif;
-    color: var(--dark-turquoise);
 }
 
 fieldset {
-    border: 4px solid var(--dark-turquoise);
-    background-color: var(--light-turquoise);
-    color: var(--dark-turquoise);
+    border: 4px solid var(--black);
+    background-color: var(--ucla-blue);
     margin-bottom: 10px;
     padding: 5px;
 }
-    legend {
-        background-color: var(--dark-turquoise);
-        color: var(--burnt-orange);
-        padding: 2px;
-        border: 2px solid var(--burnt-orange);
-        font-size: 140%;
-    }
 
 label {
     display: block;
-    border-left: 2px solid var(--dark-turquoise);
+    border-left: 2px solid var(--dark-gray);
     padding: 0 1%;
     margin-top: 2%;
     margin-bottom: 2%;
-    color: var(--dark-turquoise)
 }
     button {
-        background-color: var(--burnt-orange);
-        color: var(--light-turquoise);
+        background-color: var(--cobalt-blue);
         margin: 2%;
         padding: 1% 2%;
         font-size: 150%;
@@ -125,24 +109,24 @@ label {
     }
 
     textarea {
-        background-color: var(--light-turquoise);
-        color: var(--dark-turquoise);
+        background-color: var(--off-white);
+        color: var(--dark-gray);
         margin: 1%;
         padding: 4px 8px;
         font-size: 120%;
-        border: 2px solid var(--dark-turquoise);
+        border: 2px solid var(--black);
     }
 
 :focus {
-    background-color: var(--mid-turquoise);
-    color: var(--burnt-orange);
+    background-color: var(--ucla-blue);
+    color: var(--black);
 }
 *::placeholder{
     font-weight: bold
 }
 
 *:required {
-    border: 2px solid var(--burnt-orange);
+    border: 2px solid red;
 }
 
 label.required:after{
