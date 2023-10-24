@@ -15,7 +15,7 @@ Efficiency, seamlessness, and upgradability are the system quality attributes I 
 
 ## Built with
 
-Python, PyTorch, FastAI, MongoDB, Node.js, REACT, HTML, CSS
+Python, PyTorch, FastAI, MongoDB, Node.js, REACT, HTML, CSS, OSMnx
 
 ## Contributing
 
@@ -35,10 +35,9 @@ Alec Swift - Alecswift@gmail.com - [LinkedIn](https://www.linkedin.com/in/alec-s
 
 ## Acknowledgements
 
-[Practical Deep Learning for Coders](https://course.fast.ai/)
-[Collision Data](https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::collisions/about)
-[Open Street Map Data](https://www.openstreetmap.org/)
-[OSMnx Open Street Map Python Library](https://osmnx.readthedocs.io/en/stable/)
+- [Practical Deep Learning for Coders](https://course.fast.ai/)
+- [Collision Data](https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::collisions/about)
+- [Open Street Map Data](https://www.openstreetmap.org/)
 
 ## License
 
