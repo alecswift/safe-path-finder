@@ -4,8 +4,8 @@
 {% block content %}
     
     <main>
-        <p>Please enter the starting address and destination address for your desired path</p>
         <form action="/addresses" method="POST">
+            <legend>Please enter the starting address and destination address for your desired path</legend>
             <p>
                 <label for="source">Source:</label>
                 <input type="text" id="source" name="source_address" size="30" maxlength="100" required placeholder="Source Address" autofocus />

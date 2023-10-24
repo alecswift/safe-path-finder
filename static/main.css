@@ -1,6 +1,6 @@
 /*   ----- Imports  -----  */
 
-@import url(//fonts.googleapis.com/css?family=Nunito|Lobster);
+@import url('https://fonts.cdnfonts.com/css/modern-sans');
 
 /*   ----- Variables  -----  */
 
@@ -10,17 +10,13 @@
     --ucla-blue: rgba(62, 120, 178);
     --cobalt-blue: rgba(0, 75, 168);
     --black: rgba(7, 7, 10);
+    --yellow-orange: rgba(255, 174, 66);
 }
 
 /*  ----- Viewport ----- elements inherited by all remaining elements ----- */
 body {       /* Can alternatively define in html {} or :root {} */
     background-color: var(--black);
-    background-image: url("images/desert-gorge-background.jpg");
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: top left;
-    background-repeat: no-repeat;
-    font-family: "Nunito", sans-serif; /* Define with at least one font name and its related generic family name.*/
+    font-family: "Modern Sans", sans-serif; /* Define with at least one font name and its related generic family name.*/
     color: var(--off-white);
     vertical-align: center;
     text-align: center;
@@ -29,16 +25,22 @@ body {       /* Can alternatively define in html {} or :root {} */
 /*  ----- Page layout blocks -----  */
 
 header {
-    background-color: var(--cobalt-blue);
-    height: 100px; 
-    margin: 0, 2;
-    padding: 0;
+    background-image: url("jesse-collins-CKD2uFQOPWc-unsplash.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: top left;
+    background-repeat: no-repeat;
+    height: 300px; 
+    margin: 0;
+    padding-top: 30px;
     border: 1px var(--off-white);
+    font-size: xx-large;
+    font-weight: 1000;
 }
 
 main {
     margin: 4px 0;
-    padding: 8px 20px;
+    padding: 8px 40px;
     text-align: left;
     border-bottom: 1px solid var(--off-white);
 }
@@ -50,8 +52,10 @@ footer {
 
 /*  ----- Navigation ----- Override text links for navigation only.  */
 nav {
+    float: left;
     text-decoration: none;
     vertical-align: center;
+    
 }
 
 nav a {
@@ -115,15 +119,15 @@ label {
     }
 
 :focus {
-    background-color: var(--ucla-blue);
-    color: var(--black);
+    background-color: var(--dark-gray);
+    color: var(--off-white);
 }
 *::placeholder{
     font-weight: bold
 }
 
 *:required {
-    border: 2px solid red;
+    border: 2px solid var(--yellow-orange);
 }
 
 label.required:after{
