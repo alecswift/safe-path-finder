@@ -37,6 +37,8 @@ Alec Swift - Alecswift@gmail.com - [LinkedIn](https://www.linkedin.com/in/alec-s
 
 [Practical Deep Learning for Coders](https://course.fast.ai/)
 [Collision Data](https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::collisions/about)
+[Open Street Map Data](https://www.openstreetmap.org/)
+[OSMnx Open Street Map Python Library](https://osmnx.readthedocs.io/en/stable/)
 
 ## License
 
