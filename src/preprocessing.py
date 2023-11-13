@@ -23,28 +23,9 @@ collisions = raw_collisions[[
     'INCDATEDay', 'INCDATEDayofweek', 'INCDATEDayofyear'
 ]].copy()
 
-
-# As this is the first iteration of the machine learning model I will drop columns are not significant factors. Note that it's difficult to decide whether or not a factor is significant. However, for simplicity the columns I will keep are: the location in coordinates, the date columns, the weather, and the light conditions.
-
-
-
-dep_var = 'SEVERITYCODE'
-# If i want to use root mean squared log error (RMSLE) as the metric for
-# the dependant variable than I'll need to take the log of the column
-continuous, categorical = cont_cat_split(collisions)
-procs = (Categorify, FillMissing)
-tp_collisions = TabularPandas(collisions, procs, categorical, continuous, y_names=dep_var)
-tp_collisions['SEVERITYCODE'] += 1
-# tp_collisions.items.to_csv("/home/alec/Desktop/code/personal_projects/safe-path-finder/data/collisions.csv")
-collisions = tp_collisions.items
-
-
-# I'll possibly need to define splits later (training set and validation set) Probably random splits
-
-# Categorify and FillMissing are TabularProcs. These transform data in place by replacing categorical data with numerical data and replacing missing values with the median of the column respectively. Fill missing also adds a boolean column to indicate replaced rows. I add one to all of the data points in the severity code column as 0 will indicate no accident once I generate the fake data. Finally I save this data to a file in the last line of code that is commented out.
-
 new_collisions = pd.DataFrame(columns=collisions.columns)
 num = 1
+
 while num <= 242131 * 3:
     if num % 10000 == 0:
         print(num/(242131 * 3)*100, '%')
@@ -70,3 +51,4 @@ while num <= 242131 * 3:
     num += 1
 
 new_collisions.to_csv("/home/alec/Desktop/code/personal_projects/safe-path-finder/data/new_collisions.csv")
+collisions.to_csv("/home/alec/Desktop/code/personal_projects/safe-path-finder/data/collisions.csv")
