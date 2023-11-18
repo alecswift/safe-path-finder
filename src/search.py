@@ -18,9 +18,6 @@ def build_graph(directory):
     with open("src/graph.pkl", "wb") as out_file:
         pickle.dump(graph, out_file)
 
-with open("src/graph.pkl", "rb") as in_file:
-    seattle_graph = pickle.load(in_file)
-
 # convert user input to a start/end in the graph by finding the closest point in the graph either using the vs.find function or another method as this won't work for every coordinate
 
 def a_star_search(start, end):
@@ -36,18 +33,21 @@ def a_star_search(start, end):
     end_lat, end_lon = end['lat'], end['lon']
 
     # need to create node object with parents to find path
-    while minheap[0][0] != end:
+    while minheap:
         _, _, curr_node, curr_dist = heapq.heappop(minheap)
+
+        if curr_node == end:
+            break
 
         for out_edge_idx in seattle_graph.incident(curr_node, mode="out"):
             out_edge = seattle_graph.es[out_edge_idx]
             new_dist = curr_dist + out_edge["length"]
-            neighbor = out_edge["v"]
+            neighbor = seattle_graph.vs.find(id=out_edge["v"])
             dist_to_end = haversine((neighbor['lat'], neighbor['lon']), (end_lat, end_lon)) * 1000 # kilometers to meters
 
 
             # need to add parent traversal
-            if neighbor not in distances or new_dist < distances[neighbor]:
+            if neighbor not in distances or new_dist < distances[neighbor][0]:
                 distances[neighbor] = (new_dist, curr_node)
             else: # visited
                 continue
@@ -58,7 +58,7 @@ def a_star_search(start, end):
 
 
     path = []
-    curr = distances[end]
+    curr = distances[end][1]
     while curr is not None:
         path.append(curr)
         curr = distances[curr][1]
@@ -66,7 +66,14 @@ def a_star_search(start, end):
     return path[::-1]
 
 
-
+if __name__ == "__main__":
+    # build_graph("/home/ubuntu/safe-path-finder/src")
+    with open("src/graph.pkl", "rb") as in_file:
+        seattle_graph = pickle.load(in_file)
+    path = a_star_search(seattle_graph.vs[0], seattle_graph.vs[5])
+    print(path)
+    
+    
 
 # neighbors: https://igraph.org/r/html/1.2.7/neighbors.html
 
@@ -75,5 +82,5 @@ def a_star_search(start, end):
 #print(seattle_graph.vs["geometry"][0:10])
 # print(seattle_graph.vs.find(geometry=Point(-122.3186189, 47.6426471))) # need to round to 7 digits after the decimal point and find nearest point
 # print(seattle_graph.incident(seattle_graph.vs.find(geometry=Point(-122.3186189, 47.6426471)), mode="out")) # returns vertex edges
-print(seattle_graph.es[0]["length"])
+# print(seattle_graph.es[0]["length"])
 # length is measured in meters
