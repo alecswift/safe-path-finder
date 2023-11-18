@@ -3,6 +3,7 @@ import pickle
 
 from pyrosm import get_data, OSM
 from shapely import Point
+from haversine import haversine
 
 def build_graph(directory):
     """
@@ -29,24 +30,40 @@ def a_star_search(start, end):
     end: ending/target vertex in the graph
     return: path through the graph
     """
-
-    minheap = []
-    distances = {start: 0} # also the visited set
+    entry = 1
+    minheap = [(0, 0, start, 0)] # add first item
+    distances = {start: (0, None)} # also the visited set
+    end_lat, end_lon = end['lat'], end['lon']
 
     # need to create node object with parents to find path
     while minheap[0][0] != end:
-        curr_node, curr_dist = heapq.heappop(minheap)
+        _, _, curr_node, curr_dist = heapq.heappop(minheap)
 
         for out_edge_idx in seattle_graph.incident(curr_node, mode="out"):
             out_edge = seattle_graph.es[out_edge_idx]
-            out_dist = out_edge["length"]
-            end_dist = 
+            new_dist = curr_dist + out_edge["length"]
             neighbor = out_edge["v"]
+            dist_to_end = haversine((neighbor['lat'], neighbor['lon']), (end_lat, end_lon)) * 1000 # kilometers to meters
 
-            if neighbor in distances:
-                pass
 
-            # watch the a* search computerphile video, how does the visited/distance set work?
+            # need to add parent traversal
+            if neighbor not in distances or new_dist < distances[neighbor]:
+                distances[neighbor] = (new_dist, curr_node)
+            else: # visited
+                continue
+            
+            weight = 2 * (new_dist + dist_to_end)
+            heapq.heappush(minheap, (weight, entry, neighbor, new_dist))
+            entry += 1
+
+
+    path = []
+    curr = distances[end]
+    while curr is not None:
+        path.append(curr)
+        curr = distances[curr][1]
+
+    return path[::-1]
 
 
 
@@ -59,3 +76,4 @@ def a_star_search(start, end):
 # print(seattle_graph.vs.find(geometry=Point(-122.3186189, 47.6426471))) # need to round to 7 digits after the decimal point and find nearest point
 # print(seattle_graph.incident(seattle_graph.vs.find(geometry=Point(-122.3186189, 47.6426471)), mode="out")) # returns vertex edges
 print(seattle_graph.es[0]["length"])
+# length is measured in meters
