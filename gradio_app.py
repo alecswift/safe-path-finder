@@ -1,11 +1,12 @@
 import gradio as gr
+from src.random_forests import predictor
 
 
-def greet(name):
-    return "Hello " + name + "!"
-
-
-demo = gr.Interface(fn=greet, inputs="text", outputs="text")
+demo = gr.Interface(
+    fn=predictor,
+    inputs=["text", "text", "text", "number", "number", "number", "number", "number"],
+    outputs="number"
+)
 
 if __name__ == "__main__":
     demo.launch(show_api=False)
