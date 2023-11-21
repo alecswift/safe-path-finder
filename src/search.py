@@ -1,10 +1,8 @@
-import heapq
 import pickle
 
 import networkx
 from pyrosm import get_data, OSM
 import osmnx
-from haversine import haversine
 
 def build_graph(directory):
     """
@@ -19,8 +17,11 @@ def build_graph(directory):
     with open("src/graph.pkl", "wb") as out_file:
         pickle.dump(graph, out_file)
 
-def shortest_path(graph, source_address, target_address)
-
+def shortest_path(graph, source_address, target_address):
+    """
+    Takes a graph, source address, and target address and returns the shortest
+    path from the source address to the target address
+    """
     source = osmnx.geocode(source_address)
     target = osmnx.geocode(target_address)
 
