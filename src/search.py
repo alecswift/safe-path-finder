@@ -17,54 +17,21 @@ def build_graph(directory):
     with open("src/graph.pkl", "wb") as out_file:
         pickle.dump(graph, out_file)
 
-# convert user input to a start/end in the graph by finding the closest point in the graph either using the vs.find function or another method as this won't work for every coordinate
-
-def a_star_search(start, end):
+def shortest_path(graph, source_address, target_address):
     """
-    parameters
-    start: starting vertex in the graph
-    end: ending/target vertex in the graph
-    return: path through the graph
+    Takes a graph, source address, and target address and returns the shortest
+    path from the source address to the target address
     """
-    entry = 1
-    minheap = [(0, 0, start, 0)] # add first item
-    distances = {start: (0, None)} # also the visited set
-    end_lat, end_lon = end['lat'], end['lon']
+    source = osmnx.geocode(source_address)
+    target = osmnx.geocode(target_address)
 
-    # need to create node object with parents to find path
-    while minheap[0][0] != end:
-        _, _, curr_node, curr_dist = heapq.heappop(minheap)
+    source_node = osmnx.get_nearest_node(graph, source)
+    target_node = osmnx.get_nearest_node(graph, target)
 
-        for out_edge_idx in seattle_graph.incident(curr_node, mode="out"):
-            out_edge = seattle_graph.es[out_edge_idx]
-            new_dist = curr_dist + out_edge["length"]
-            neighbor = out_edge["v"]
-            dist_to_end = haversine((neighbor['lat'], neighbor['lon']), (end_lat, end_lon)) * 1000 # kilometers to meters
+    route = networkx.shortest_path(graph, source_node, target_node, weight="length")
+    
+    return route
 
-
-            # need to add parent traversal
-            if neighbor not in distances or new_dist < distances[neighbor]:
-                distances[neighbor] = (new_dist, curr_node)
-            else: # visited
-                continue
-            
-            weight = 2 * (new_dist + dist_to_end)
-            heapq.heappush(minheap, (weight, entry, neighbor, new_dist))
-            entry += 1
-
-
-    path = []
-    curr = distances[end]
-    while curr is not None:
-        path.append(curr)
-        curr = distances[curr][1]
-
-    return path[::-1]
-
-
-
-
-# neighbors: https://igraph.org/r/html/1.2.7/neighbors.html
 
 if __name__ == "__main__":
     build_graph("/home/alec/Desktop/code/personal_projects/safe-path-finder/src")
