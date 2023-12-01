@@ -12,8 +12,8 @@ def build_graph(directory):
     """
     data_seattle = get_data("Seattle", directory=directory)
     osm_seattle = OSM(data_seattle)
-    nodes, edges = osm_seattle.get_network(nodes=True, network_type="driving", graph_type="networkx")
-    graph = osm_seattle.to_graph(nodes, edges)
+    nodes, edges = osm_seattle.get_network(nodes=True, network_type="driving")
+    graph = osm_seattle.to_graph(nodes, edges, graph_type="networkx")
     with open("src/graph.pkl", "wb") as out_file:
         pickle.dump(graph, out_file)
 
@@ -34,7 +34,7 @@ def shortest_path(graph, source_address, target_address):
 
 
 if __name__ == "__main__":
-    # build_graph("/home/ubuntu/safe-path-finder/src")
+    build_graph("/home/alec/Desktop/code/personal_projects/safe-path-finder/src")
     with open("src/graph.pkl", "rb") as in_file:
         seattle_graph = pickle.load(in_file)
     
