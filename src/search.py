@@ -1,9 +1,8 @@
-import heapq
 import pickle
 
+import networkx
 from pyrosm import get_data, OSM
-from shapely import Point
-from haversine import haversine
+import osmnx
 
 def build_graph(directory):
     """
@@ -13,7 +12,7 @@ def build_graph(directory):
     """
     data_seattle = get_data("Seattle", directory=directory)
     osm_seattle = OSM(data_seattle)
-    nodes, edges = osm_seattle.get_network(nodes=True, network_type="driving")
+    nodes, edges = osm_seattle.get_network(nodes=True, network_type="driving", graph_type="networkx")
     graph = osm_seattle.to_graph(nodes, edges)
     with open("src/graph.pkl", "wb") as out_file:
         pickle.dump(graph, out_file)
@@ -33,21 +32,18 @@ def a_star_search(start, end):
     end_lat, end_lon = end['lat'], end['lon']
 
     # need to create node object with parents to find path
-    while minheap:
+    while minheap[0][0] != end:
         _, _, curr_node, curr_dist = heapq.heappop(minheap)
-
-        if curr_node == end:
-            break
 
         for out_edge_idx in seattle_graph.incident(curr_node, mode="out"):
             out_edge = seattle_graph.es[out_edge_idx]
             new_dist = curr_dist + out_edge["length"]
-            neighbor = seattle_graph.vs.find(id=out_edge["v"])
+            neighbor = out_edge["v"]
             dist_to_end = haversine((neighbor['lat'], neighbor['lon']), (end_lat, end_lon)) * 1000 # kilometers to meters
 
 
             # need to add parent traversal
-            if neighbor not in distances or new_dist < distances[neighbor][0]:
+            if neighbor not in distances or new_dist < distances[neighbor]:
                 distances[neighbor] = (new_dist, curr_node)
             else: # visited
                 continue
@@ -58,7 +54,7 @@ def a_star_search(start, end):
 
 
     path = []
-    curr = distances[end][1]
+    curr = distances[end]
     while curr is not None:
         path.append(curr)
         curr = distances[curr][1]
@@ -66,14 +62,7 @@ def a_star_search(start, end):
     return path[::-1]
 
 
-if __name__ == "__main__":
-    # build_graph("/home/ubuntu/safe-path-finder/src")
-    with open("src/graph.pkl", "rb") as in_file:
-        seattle_graph = pickle.load(in_file)
-    path = a_star_search(seattle_graph.vs[0], seattle_graph.vs[5])
-    print(path)
-    
-    
+
 
 # neighbors: https://igraph.org/r/html/1.2.7/neighbors.html
 
@@ -82,5 +71,5 @@ if __name__ == "__main__":
 #print(seattle_graph.vs["geometry"][0:10])
 # print(seattle_graph.vs.find(geometry=Point(-122.3186189, 47.6426471))) # need to round to 7 digits after the decimal point and find nearest point
 # print(seattle_graph.incident(seattle_graph.vs.find(geometry=Point(-122.3186189, 47.6426471)), mode="out")) # returns vertex edges
-# print(seattle_graph.es[0]["length"])
+print(seattle_graph.es[0]["length"])
 # length is measured in meters
