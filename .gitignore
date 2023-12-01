@@ -3,3 +3,5 @@
 __pycache__/
 data/
 Tabular/
+/src/graph.pkl
+/src/Seattle.osm.pbf
