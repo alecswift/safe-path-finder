@@ -12,8 +12,8 @@ def build_graph(directory):
     """
     data_seattle = get_data("Seattle", directory=directory)
     osm_seattle = OSM(data_seattle)
-    nodes, edges = osm_seattle.get_network(nodes=True, network_type="driving", graph_type="networkx")
-    graph = osm_seattle.to_graph(nodes, edges)
+    nodes, edges = osm_seattle.get_network(nodes=True, network_type="driving")
+    graph = osm_seattle.to_graph(nodes, edges, graph_type="networkx")
     with open("src/graph.pkl", "wb") as out_file:
         pickle.dump(graph, out_file)
 
@@ -66,10 +66,9 @@ def a_star_search(start, end):
 
 # neighbors: https://igraph.org/r/html/1.2.7/neighbors.html
 
-#print(seattle_graph.vs.attribute_names())
-#print(seattle_graph.es.attribute_names())
-#print(seattle_graph.vs["geometry"][0:10])
-# print(seattle_graph.vs.find(geometry=Point(-122.3186189, 47.6426471))) # need to round to 7 digits after the decimal point and find nearest point
-# print(seattle_graph.incident(seattle_graph.vs.find(geometry=Point(-122.3186189, 47.6426471)), mode="out")) # returns vertex edges
-print(seattle_graph.es[0]["length"])
-# length is measured in meters
+if __name__ == "__main__":
+    build_graph("/home/alec/Desktop/code/personal_projects/safe-path-finder/src")
+    with open("src/graph.pkl", "rb") as in_file:
+        seattle_graph = pickle.load(in_file)
+    
+    
