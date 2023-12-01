@@ -34,7 +34,7 @@ def shortest_path(graph, source_address, target_address):
 
 
 if __name__ == "__main__":
-    build_graph("/home/alec/Desktop/code/personal_projects/safe-path-finder/src")
+    # build_graph("/home/ubuntu/safe-path-finder/src")
     with open("src/graph.pkl", "rb") as in_file:
         seattle_graph = pickle.load(in_file)
     
