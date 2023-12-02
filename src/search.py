@@ -10,16 +10,40 @@ def shortest_path(source, target):
     target = osmnx.geocode(target)
     source_y, source_x = source
     target_y, target_x = target
-    url = f"http://router.project-osrm.org/route/v1/driving/{source_x},{source_y};{target_x},{target_y}?alternatives=true&steps=true"
+    url = f"http://router.project-osrm.org/route/v1/driving/{source_x},{source_y};{target_x},{target_y}?alternatives=true&steps=true&continue_straight=true"
     r = requests.get(url)
     res = r.json()
     return res
 
+def get_directions(routes):
+    directions = []
+    # loop this for every leg of journey?
+    for idx, step in enumerate(routes['routes'][0]['legs'][0]['steps']):
+        type_of_maneuver = step['maneuver']['type']
+        location = step['name']
+        direction = step['maneuver']['modifier']
+        if type_of_maneuver == 'depart':
+            directions.append(f"{idx + 1}. Depart from {location}")
+        elif type_of_maneuver == 'arrive':
+            directions.append(f"{idx + 1}. Arrive at {location}")
+        else:
+            directions.append(f"{idx + 1}. {type_of_maneuver} {direction} at {location}")
+    return '\n'.join(directions)
+
 
 if __name__ == "__main__":
-    print(shortest_path(
+    routes = shortest_path(
         "819, Nob Hill Avenue North, Uptown, Queen Anne, Seattle, King County, Washington, 98109, United States",
         "501, Roy Street, South Lake Union, Belltown, Seattle, King County, Washington, 98109, United States"
-    ))
+    )
+    print(get_directions(routes))
+    
+        
+
+    # format of directions
+    # start at source
+    # turn right/left onto x
+    # so on
+    # end at desination
     
     
