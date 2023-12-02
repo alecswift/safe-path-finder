@@ -24,18 +24,20 @@ def shortest_path(graph, source_address, target_address):
     """
     source = osmnx.geocode(source_address)
     target = osmnx.geocode(target_address)
-
-    source_node = osmnx.get_nearest_node(graph, source)
-    target_node = osmnx.get_nearest_node(graph, target)
-
-    route = networkx.shortest_path(graph, source_node, target_node, weight="length")
+    print(source, target)
+    source_node = osmnx.nearest_nodes(graph, source[1], source[0])
+    target_node = osmnx.nearest_nodes(graph, target[1], target[0])
     
-    return route
+    routes = networkx.all_shortest_paths(graph, source_node, target_node, weight="length")
+    
+    return routes
 
 
 if __name__ == "__main__":
     # build_graph("/home/ubuntu/safe-path-finder/src")
     with open("src/graph.pkl", "rb") as in_file:
         seattle_graph = pickle.load(in_file)
+
+    print([path for path in shortest_path(seattle_graph, "Corner Market, 1530, Post Alley, West Edge, Belltown, Seattle, King County, Washington, 98101, United States", "3710, Wallingford Avenue North, Wallingford, Seattle, King County, Washington, 98103, United States")])
     
     
