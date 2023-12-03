@@ -30,6 +30,9 @@ def get_directions(routes):
             directions.append(f"{idx + 1}. {type_of_maneuver} {direction} at {location}")
     return '\n'.join(directions)
 
+def valid_address(address):
+    return True
+
 
 if __name__ == "__main__":
     routes = shortest_path(
