@@ -21,6 +21,7 @@ body {       /* Can alternatively define in html {} or :root {} */
     color: var(--off-white);
     vertical-align: center;
     text-align: center;
+    white-space: pre-wrap;
 }
 
 /*  ----- Page layout blocks -----  */
