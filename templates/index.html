@@ -4,16 +4,17 @@
 {% block content %}
     
     <main>
-        <form action="/addresses" method="POST">
+        <form action="/directions.html" method="POST" id="directions">
             <legend>Please enter the starting address and destination address for your desired path</legend>
             <p>
                 <label for="source">Source:</label>
-                <input type="text" id="source" name="source_address" size="30" maxlength="100" required placeholder="Source Address" autofocus />
+                <input type="text" id="source" name="source" size="30" maxlength="100" required placeholder="Source Address" autofocus />
             </p>
             <p>
                 <label for="destination">Destination:</label>
-                <input type="text" id="destination" name="Destination" size="30" maxlength="100" required placeholder="Destination Address" autofocus/>
+                <input type="text" id="destination" name="destination" size="30" maxlength="100" required placeholder="Destination Address" autofocus/>
             </p>
         </form>
+        <button type="submit" form="directions" value="Submit">Get Directions</button>
     </main>
 {% endblock %}
