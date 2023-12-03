@@ -23,6 +23,7 @@ def addresses():
         if valid_address(source) and valid_address(destination):
             routes = shortest_path(source, destination)
             directions = get_directions(routes)
+            # move to different file?
             with sqlite3.connect('database.sqlite') as con:
                 cursor = con.cursor()
                 cursor.execute("INSERT INTO database VALUES (?, ?, ?)", (source, destination, directions))
