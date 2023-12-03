@@ -25,11 +25,13 @@ def get_directions(routes):
         location = step['name']
         direction = step['maneuver']['modifier']
         if type_of_maneuver == 'depart':
-            directions.append(f"{idx + 1}. Depart from {location}")
+            instruction = f"{idx + 1}. Depart from {location}"
         elif type_of_maneuver == 'arrive':
-            directions.append(f"{idx + 1}. Arrive at {location}")
+            instruction = f"{idx + 1}. Arrive at {location}"
         else:
-            directions.append(f"{idx + 1}. {type_of_maneuver} {direction} at {location}")
+            instruction = f"{idx + 1}. {type_of_maneuver} {direction} at {location}"
+        directions.append((location, instruction))
+        
     return directions
 
 def safe_path(directions):
