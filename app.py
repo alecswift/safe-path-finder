@@ -1,4 +1,8 @@
 from flask import Flask, render_template, request
+import sys
+sys.path.insert(0, './src')
+from search import shortest_path, valid_address, get_directions
+
 
 app = Flask('__name__')
 
@@ -7,20 +11,21 @@ app = Flask('__name__')
 def index():
     return render_template("index.html")
 
-@app.route("/addresses.html", methods=['POST', 'GET'])
+@app.route("/directions.html", methods=['POST', 'GET'])
 def addresses():
     error = None
+    directions = ""
+
     if request.method == 'POST':
         source = request.form['source']
         destination = request.form['destination']
         if valid_address(source) and valid_address(destination):
-            return safe_path(source, destination)
+            routes = shortest_path(source, destination)
+            directions = get_directions(routes)
+            return render_template("directions.html", directions=directions)
         error = 'Invalid Address'
 
     return render_template("index.html", error=error)
 
-def valid_address(address):
-    return True
-
-def safe_path(source, destination):
-    pass
+if __name__ == "__main__":
+    app.run(debug=True)
