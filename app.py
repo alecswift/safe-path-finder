@@ -29,7 +29,7 @@ def addresses():
                 cursor.execute("INSERT INTO database VALUES (?, ?, ?)", (source, destination, directions))
 
                 con.commit()
-            return render_template("directions.html", directions=directions)
+            return render_template("directions.html", directions='\n'.join(directions))
         error = 'Invalid Address'
 
     return render_template("index.html", error=error)
