@@ -14,28 +14,34 @@ def index():
 
 @app.route("/directions.html", methods=['POST', 'GET'])
 def addresses():
+    """
+    Render either the index template or the directions
+    template based on the request method
+    """
     error = None
-    directions = ""
 
     if request.method == 'POST':
-        source = request.form['source']
-        destination = request.form['destination']
-        weather = request.form['weather']
-        light_cond = request.form['light_conditions']
+        source, destination = request.form['source'], request.form['destination']
+        weather, light_cond = request.form['weather'], request.form['light_conditions']
         if valid_address(source) and valid_address(destination):
             routes = shortest_path(source, destination)
             directions = get_directions(routes)
             safe_path = get_safe_path(directions, weather, light_cond)
-            # move to different file?
-            with sqlite3.connect('database.sqlite') as con:
-                cursor = con.cursor()
-                cursor.execute("INSERT INTO database VALUES (?, ?, ?)", (source, destination, safe_path))
-
-                con.commit()
+            insert_to_database(source, destination, safe_path)
             return render_template("directions.html", directions=safe_path)
         error = 'Invalid Address'
 
     return render_template("index.html", error=error)
+
+def insert_to_database(source, destination, safe_path):
+    """
+    Insert the given source, destination, and 
+    safe path as a row into the sqlite database
+    """
+    with sqlite3.connect('database.sqlite') as con:
+        cursor = con.cursor()
+        cursor.execute("INSERT INTO database VALUES (?, ?, ?)", (source, destination, safe_path))
+        con.commit()
 
 if __name__ == "__main__":
     app.run(debug=True)

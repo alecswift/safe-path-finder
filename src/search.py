@@ -19,27 +19,37 @@ def shortest_path(source, target):
     return res
 
 def get_directions(routes):
+    """Returns a list of directions from the given routes"""
     directions = []
     # loop this for every leg of journey?
     for idx, step in enumerate(routes['routes'][0]['legs'][0]['steps']):
-        type_of_maneuver = step['maneuver']['type']
-        location = step['name']
-        direction = step['maneuver']['modifier']
-        if type_of_maneuver == 'depart':
-            instruction = f"{idx + 1}. Depart from {location}"
-        elif type_of_maneuver == 'arrive':
-            instruction = f"{idx + 1}. Arrive at {location}"
-        else:
-            instruction = f"{idx + 1}. {type_of_maneuver} {direction} at {location}"
+        location, instruction = build_instruction(step, idx)
         directions.append([location, instruction])
         
     return directions
 
+def build_instruction(step, idx):
+    """
+    Returns the location and instruction for the given
+    direction step and index
+    """
+    type_of_maneuver = step['maneuver']['type']
+    location = step['name']
+    direction = step['maneuver']['modifier']
+    if type_of_maneuver == 'depart':
+        instruction = f"{idx + 1}. Depart from {location}"
+    elif type_of_maneuver == 'arrive':
+        instruction = f"{idx + 1}. Arrive at {location}"
+    else:
+        instruction = f"{idx + 1}. {type_of_maneuver} {direction} at {location}"
+    return location, instruction
+
 def get_safe_path(directions, weather, light_cond):
+    """Returns a safe path string from the given directions, weather, and light condition"""
     maximum = (0, 0) # prediction value, directions index
     for idx, direction in enumerate(directions):
         location, _ = direction
-        prediction = random_forests.predictor(location, weather, light_cond, *get_date())
+        prediction = random_forests.predictor((location, weather, light_cond, *get_date()))
         if prediction > maximum[0]:
             maximum = (prediction, idx)
         
@@ -48,6 +58,7 @@ def get_safe_path(directions, weather, light_cond):
     return "\n".join(instruction for _, instruction in directions)
 
 def get_date():
+    """Returns information about the current date"""
     today = date.today()
     week_day = today.timetuple()[6]
     year_day = today.timetuple()[7]
@@ -55,8 +66,8 @@ def get_date():
     return today.day, week, today.month, today.year, week_day, year_day
 
 def valid_address(address):
+    """Returns a bool for whether or not the given address string is valid"""
     return True
-
 
 if __name__ == "__main__":
     routes = shortest_path(
