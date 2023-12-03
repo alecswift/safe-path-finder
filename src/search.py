@@ -1,6 +1,7 @@
 import osmnx
 import requests
 
+from datetime import date, datetime
 import random_forests
 
 def shortest_path(source, target):
@@ -34,19 +35,25 @@ def get_directions(routes):
         
     return directions
 
-def safe_path(directions):
+def safe_path(directions, weather, light_cond):
     # add user input for the rest of the predictor variables
     maximum = (0, 0) # prediction value, directions index
     for idx, direction in enumerate(directions):
         location, _ = direction
-        prediction = random_forests.predictor(location)
-        if prediction > maximum:
+        prediction = random_forests.predictor(location, weather, light_cond, *get_date())
+        if prediction > maximum[0]:
             maximum = (prediction, idx)
         
     _, idx = maximum
-    directions[idx][1] += "accident is most likely at this location"
+    directions[idx][1] += " - accident is most likely at this location"
     return directions
 
+def get_date():
+    today = date.today()
+    week_day = today.timetuple()[6]
+    year_day = today.timetuple()[7]
+    week = today.isocalendar()[1]
+    return today.day, week, today.month, today.year, week_day, year_day
     
 
 
@@ -58,7 +65,8 @@ if __name__ == "__main__":
         "819, Nob Hill Avenue North, Uptown, Queen Anne, Seattle, King County, Washington, 98109, United States",
         "501, Roy Street, South Lake Union, Belltown, Seattle, King County, Washington, 98109, United States"
     )
-    print(get_directions(routes))
+    directions = get_directions(routes)
+    print(safe_path(directions, "Clear", "Dawn"))
     
         
 
