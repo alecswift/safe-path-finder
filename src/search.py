@@ -30,18 +30,24 @@ def get_directions(routes):
             instruction = f"{idx + 1}. Arrive at {location}"
         else:
             instruction = f"{idx + 1}. {type_of_maneuver} {direction} at {location}"
-        directions.append((location, instruction))
+        directions.append([location, instruction])
         
     return directions
 
 def safe_path(directions):
-    # change directions to return actual location
     # add user input for the rest of the predictor variables
-    # find the maximum accident risk node
-    # add a string caution warning for the maximum accident risk node
     maximum = (0, 0) # prediction value, directions index
-    for node in directions:
-        pass
+    for idx, direction in enumerate(directions):
+        location, _ = direction
+        prediction = random_forests.predictor(location)
+        if prediction > maximum:
+            maximum = (prediction, idx)
+        
+    _, idx = maximum
+    directions[idx][1] += "accident is most likely at this location"
+    return directions
+
+    
 
 
 def valid_address(address):
