@@ -1,6 +1,8 @@
 import osmnx
 import requests
 
+import random_forests
+
 def shortest_path(source, target):
     """
     Takes a graph, source address, and target address and returns the shortest
@@ -28,11 +30,20 @@ def get_directions(routes):
             directions.append(f"{idx + 1}. Arrive at {location}")
         else:
             directions.append(f"{idx + 1}. {type_of_maneuver} {direction} at {location}")
-    return '\n'.join(directions)
+    return directions
+
+def safe_path(directions):
+    # change directions to return actual location
+    # add user input for the rest of the predictor variables
+    # find the maximum accident risk node
+    # add a string caution warning for the maximum accident risk node
+    maximum = (0, 0) # prediction value, directions index
+    for node in directions:
+        pass
+
 
 def valid_address(address):
     return True
-
 
 if __name__ == "__main__":
     routes = shortest_path(
