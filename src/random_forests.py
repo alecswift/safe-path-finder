@@ -57,9 +57,9 @@ def predictor(location, weather, light_cond, day, week, month, year, week_day, y
     return random_forest.predict(indep_vars)
 
 if __name__ == "__main__":
-    # data = organize_data(
-    #    "/home/alec/Desktop/code/personal_projects/safe-path-finder/data/collisions.csv",
-    #   "/home/alec/Desktop/code/personal_projects/safe-path-finder/data/new_collisions.csv"
-    #)
-    # random_forest_builder(data, "/home/alec/Desktop/code/personal_projects/safe-path-finder/src/random_forest.joblib")
-    # print(predictor("8814, 28th Avenue Northwest, North Beach, Seattle, King County, Washington, 98117, United States", "Snowing", "Dusk", 1, 1, 1, 2024, 1, 1))
+    data = organize_data(
+        "/home/alec/Desktop/code/personal_projects/safe-path-finder/data/collisions.csv",
+        "/home/alec/Desktop/code/personal_projects/safe-path-finder/data/new_collisions.csv"
+    )
+    random_forest_builder(data, "/home/alec/Desktop/code/personal_projects/safe-path-finder/src/random_forest.joblib")
+    print(predictor("8814, 28th Avenue Northwest, North Beach, Seattle, King County, Washington, 98117, United States", "Snowing", "Dusk", 1, 1, 1, 2024, 1, 1))
