@@ -35,7 +35,7 @@ def get_directions(routes):
         
     return directions
 
-def safe_path(directions, weather, light_cond):
+def get_safe_path(directions, weather, light_cond):
     # add user input for the rest of the predictor variables
     maximum = (0, 0) # prediction value, directions index
     for idx, direction in enumerate(directions):
@@ -46,7 +46,7 @@ def safe_path(directions, weather, light_cond):
         
     _, idx = maximum
     directions[idx][1] += " - accident is most likely at this location"
-    return directions
+    return "\n".join(instruction for _, instruction in directions)
 
 def get_date():
     today = date.today()
@@ -66,7 +66,7 @@ if __name__ == "__main__":
         "501, Roy Street, South Lake Union, Belltown, Seattle, King County, Washington, 98109, United States"
     )
     directions = get_directions(routes)
-    print(safe_path(directions, "Clear", "Dawn"))
+    print(get_safe_path(directions, "Clear", "Dawn"))
     
         
 
