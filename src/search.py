@@ -36,7 +36,6 @@ def get_directions(routes):
     return directions
 
 def get_safe_path(directions, weather, light_cond):
-    # add user input for the rest of the predictor variables
     maximum = (0, 0) # prediction value, directions index
     for idx, direction in enumerate(directions):
         location, _ = direction
@@ -54,11 +53,10 @@ def get_date():
     year_day = today.timetuple()[7]
     week = today.isocalendar()[1]
     return today.day, week, today.month, today.year, week_day, year_day
-    
-
 
 def valid_address(address):
     return True
+
 
 if __name__ == "__main__":
     routes = shortest_path(
@@ -67,13 +65,4 @@ if __name__ == "__main__":
     )
     directions = get_directions(routes)
     print(get_safe_path(directions, "Clear", "Dawn"))
-    
-        
 
-    # format of directions
-    # start at source
-    # turn right/left onto x
-    # so on
-    # end at desination
-    
-    

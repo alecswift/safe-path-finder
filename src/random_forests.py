@@ -56,7 +56,7 @@ def predictor(location, weather, light_cond, day, week, month, year, week_day, y
     indep_vars.loc[len(indep_vars)] = weather_dict[weather], light_cond_dict[light_cond], 1, 1, x, y, year, month, week, day, week_day, year_day
     return random_forest.predict(indep_vars)
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
     # data = organize_data(
     #    "/home/alec/Desktop/code/personal_projects/safe-path-finder/data/collisions.csv",
     #   "/home/alec/Desktop/code/personal_projects/safe-path-finder/data/new_collisions.csv"
