@@ -34,6 +34,45 @@ def generate_data(collisions, new_data_file):
         row.to_frame().T.to_csv(new_data_file, header=False, index=False, mode='a')
         num += 1
 
+def organize_data(collisions_file, new_collisions_file):
+    """
+    Takes the file name for the collisions file and the new collisions file,
+    combines and makes final edits of the data, and loads the data into a 
+    tabular panda for use in the machine learning model
+    """
+    combined = combine_collisions(collisions_file, new_collisions_file)
+    dep_var = 'SEVERITYCODE'
+    continuous, categorical = cont_cat_split(combined, 1, dep_var=dep_var)
+    procs = (Categorify, FillMissing)
+    time_condition = combined.INCDATEYear<2019
+    train_idx, valid_idx = np.where(time_condition)[0], np.where(~time_condition)[0] 
+    splits = (list(train_idx),list(valid_idx))
+    organized_data = TabularPandas(
+        combined, procs, categorical, continuous, y_names=dep_var, splits=splits
+    )
+    return organized_data
+
+def combine_collisions(collisions_file, new_collisions_file):
+    """Combine the collisions file and new collisions file and return the combined dataframe"""
+    collisions = pd.read_csv(collisions_file, low_memory=False)
+    collisions["SEVERITYCODE"] = 1
+    no_collision = pd.read_csv(new_collisions_file, low_memory=False)
+
+    combined = pd.concat([collisions, no_collision], ignore_index=True)
+    combined = combined.sample(frac = 1)
+    return combined
+
+def random_forest_builder(data, file_name):
+    """Saves the random forest generated from the data to the file name"""
+    indep_vars, dep_vars = data.train.xs, data.train.y
+
+    random_forest = RandomForestRegressor(n_jobs=-1, n_estimators=50,
+        max_samples=200000, max_features=0.5,
+        min_samples_leaf=20, oob_score=True)
+    random_forest.fit(indep_vars, dep_vars)
+
+    joblib.dump(random_forest, file_name)
+
 def write_column_names(new_data_file):
     """Write the datas column names to the given new csv file"""
     with open(new_data_file, 'w') as csv_file:
