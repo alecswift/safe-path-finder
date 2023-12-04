@@ -42,6 +42,3 @@ def insert_to_database(source, destination, safe_path):
         cursor = con.cursor()
         cursor.execute("INSERT INTO database VALUES (?, ?, ?)", (source, destination, safe_path))
         con.commit()
-
-if __name__ == "__main__":
-    app.run(debug=True)
