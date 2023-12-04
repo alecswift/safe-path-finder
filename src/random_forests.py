@@ -22,7 +22,9 @@ def organize_data(collisions_file, new_collisions_file):
     time_condition = combined.INCDATEYear<2019
     train_idx, valid_idx = np.where(time_condition)[0], np.where(~time_condition)[0] 
     splits = (list(train_idx),list(valid_idx))
-    organized_data = TabularPandas(combined, procs, categorical, continuous, y_names=dep_var, splits=splits)
+    organized_data = TabularPandas(
+        combined, procs, categorical, continuous, y_names=dep_var, splits=splits
+    )
     return organized_data
 
 def combine_collisions(collisions_file, new_collisions_file):
@@ -49,12 +51,17 @@ def random_forest_builder(data, file_name):
 def predictor(data):
     """Predict the accident likelihood from the given independent variables"""
     location, weather, light_cond, day, week, month, year, week_day, year_day = data
-    random_forest = joblib.load("/home/alec/Desktop/code/personal_projects/safe-path-finder/src/random_forest.joblib")
+    random_forest = joblib.load(
+        "/home/alec/Desktop/code/personal_projects/safe-path-finder/src/random_forest.joblib"
+    )
     light_cond_dict = {light_cond: idx for idx, light_cond in enumerate(LIGHT_COND_NAMES)}
     weather_dict = {name: idx for idx, name in enumerate(WEATHER_NAMES)}
     x, y = osmnx.geocode(location)
     indep_vars = pd.DataFrame(columns=INDEP_VAR_NAMES)
-    indep_vars.loc[len(indep_vars)] = weather_dict[weather], light_cond_dict[light_cond], 1, 1, x, y, year, month, week, day, week_day, year_day
+    indep_vars.loc[len(indep_vars)] = (
+        weather_dict[weather], light_cond_dict[light_cond], 1, 1, x, y,
+        year, month, week, day, week_day, year_day
+    )
     return random_forest.predict(indep_vars)
 
 if __name__ == "__main__":
@@ -62,5 +69,10 @@ if __name__ == "__main__":
         "/home/alec/Desktop/code/personal_projects/safe-path-finder/data/collisions.csv",
         "/home/alec/Desktop/code/personal_projects/safe-path-finder/data/new_collisions.csv"
     )
-    random_forest_builder(data, "/home/alec/Desktop/code/personal_projects/safe-path-finder/src/random_forest.joblib")
-    print(predictor(("8814, 28th Avenue Northwest, North Beach, Seattle, King County, Washington, 98117, United States", "Snowing", "Dusk", 1, 1, 1, 2024, 1, 1)))
+    random_forest_builder(
+        data, "/home/alec/Desktop/code/personal_projects/safe-path-finder/src/random_forest.joblib"
+    )
+    print(predictor((
+        "8814, 28th Avenue Northwest, North Beach, Seattle, King County, Washington, 98117, United States",
+        "Snowing", "Dusk", 1, 1, 1, 2024, 1, 1
+    )))

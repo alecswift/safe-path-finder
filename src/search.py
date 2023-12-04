@@ -13,7 +13,11 @@ def shortest_path(source, target):
     target = osmnx.geocode(target)
     source_y, source_x = source
     target_y, target_x = target
-    url = f"http://router.project-osrm.org/route/v1/driving/{source_x},{source_y};{target_x},{target_y}?alternatives=true&steps=true&continue_straight=true"
+    url = (
+        f"http://router.project-osrm.org/route/v1/driving/{source_x},"
+        f"{source_y};{target_x},{target_y}?alternatives=true&steps=true"
+        f"&continue_straight=true"
+    )
     r = requests.get(url)
     res = r.json()
     return res
