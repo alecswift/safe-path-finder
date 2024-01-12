@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 import sqlite3
 import sys
 sys.path.insert(0, './src')
-from search import shortest_path, valid_address, get_directions, get_safe_path
+from predictor import get_accident_prediction, valid_address
 
 
 app = Flask('__name__')
@@ -21,14 +21,11 @@ def addresses():
     error = None
 
     if request.method == 'POST':
-        source, destination = request.form['source'], request.form['destination']
+        address = request.form['address']
         weather, light_cond = request.form['weather'], request.form['light_conditions']
-        if valid_address(source) and valid_address(destination):
-            routes = shortest_path(source, destination)
-            directions = get_directions(routes)
-            safe_path = get_safe_path(directions, weather, light_cond)
-            insert_to_database(source, destination, safe_path)
-            return render_template("directions.html", directions=safe_path)
+        prediction = get_accident_prediction(address, weather, light_cond)[0]
+        if valid_address(address):
+            return render_template("prediction.html", prediction=prediction)
         error = 'Invalid Address'
 
     return render_template("index.html", error=error)

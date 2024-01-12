@@ -1,18 +1,14 @@
 {% extends "base.html" %}
-{% block title %}Safe Path Finder{% endblock %}
-{% block header %}<h1>Safe Path Finder</h1>{% endblock %}
+{% block title %}Accident Predictor{% endblock %}
+{% block header %}<h1>Accident Predictor</h1>{% endblock %}
 {% block content %}
     
     <main>
         <form action="/directions.html" method="POST" id="directions">
-            <legend>Please enter the starting address and destination address for your desired path</legend>
+            <legend>Please enter the address, weather, and light conditions.</legend>
             <p>
-                <label for="source">Source:</label>
-                <input type="text" id="source" name="source" size="30" maxlength="100" required placeholder="Source Address" autofocus />
-            </p>
-            <p>
-                <label for="destination">Destination:</label>
-                <input type="text" id="destination" name="destination" size="30" maxlength="100" required placeholder="Destination Address" autofocus/>
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" size="30" maxlength="100" required placeholder="Street Address" autofocus />
             </p>
             <p>
                 <label for="weather">Weather:</label>
